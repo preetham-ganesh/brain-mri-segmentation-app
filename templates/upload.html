@@ -50,7 +50,25 @@
           </div>
           <div class="main-container-form">
             <form action="/upload" method="post" enctype="multipart/form-data">
+              <div class="mb-3">
+                <label for="abnormality_type" class="form-label text-white"
+                  >Abnormality type</label
+                >
+                <select
+                  class="form-select"
+                  aria-label=""
+                  id="abnormality_type"
+                  name="abnormality_type"
+                  required
+                >
+                  <option selected>Open this select menu</option>
+                  <option value="flair_abnormality_segmentation">
+                    FLAIR Abnormality Segmentation
+                  </option>
+                </select>
+              </div>
               <div class="mb-3 main-container-input-file">
+                <label for="image" class="form-label text-white">Image</label>
                 <input
                   class="form-control text-sm"
                   type="file"
