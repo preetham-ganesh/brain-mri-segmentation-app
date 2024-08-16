@@ -63,3 +63,32 @@ body {
   -webkit-box-shadow: 0 0 40px 15px #000b13;
   box-shadow: 0 0 40px 15px #000b13;
 }
+
+.footer {
+  border-top: 1px solid #d3d3d3;
+}
+
+@media (max-width: 480px) {
+  .main-container {
+    margin-top: 120px;
+    margin-bottom: 60px;
+  }
+
+  .main-container-heading {
+    margin-top: 50px;
+    margin-left: 5px;
+  }
+
+  .main-container-description {
+    margin-left: 5px;
+  }
+
+  .main-container-form {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  .main-container-button {
+    margin-top: 10px;
+  }
+}
