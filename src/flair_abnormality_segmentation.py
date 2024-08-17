@@ -127,6 +127,9 @@ class UNet(object):
         # Resizes image to (final_image_height, final_image_width, n_channels).
         model_input_image = self.resize_image(image)
 
+        # Thresholds image to have better distinction of regions in image.
+        model_input_image = self.threshold_image(model_input_image)
+
         # Casts input image to float32 and normalizes the image from [0, 255] range to [0, 1] range.
         model_input_image = model_input_image.astype(np.float32)
         model_input_image = model_input_image / 255.0
@@ -135,3 +138,31 @@ class UNet(object):
         model_input_image = np.expand_dims(model_input_image, axis=0)
         model_input_image = np.expand_dims(model_input_image, axis=3)
         return model_input_image
+
+    def postprocess_prediction(self, prediction: np.ndarray) -> np.ndarray:
+        """Converts the prediction from the segmentation model output into an image.
+
+        Converts the prediction from the segmentation model output into an image.
+
+        Args:
+            prediction: A NumPy array for the prediction output from the model for the input image.
+
+        Returns:
+            A NumPy array for the processed version of prediction output.
+        """
+        # Asserts type & value of the arguments.
+        assert isinstance(
+            prediction, np.ndarray
+        ), "Variable prediction should be of type 'np.ndarray'."
+
+        # Removes 0th and 2nd dimension from the predicted image.
+        predicted_image = np.squeeze(prediction, axis=0)
+        predicted_image = np.squeeze(predicted_image, axis=-1)
+
+        # De-normalizes predicted image from [0, 1] to [0, 255].
+        predicted_image *= 255.0
+
+        # Thresholds the predicted image to convert into black & white image, and type casts it to uint8
+        predicted_image = self.threshold_image(predicted_image)
+        predicted_image = predicted_image.astype(np.uint8)
+        return predicted_image
