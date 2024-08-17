@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="author" content="Preetham Ganesh" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Brain MRI Segmentation | Upload</title>
+    <title>Brain MRI Segmentation | Error</title>
     <link rel="icon" type="image/x-icon" href="../static/img/mri-scan.png" />
     <link rel="stylesheet" type="text/css" href="../static/css/main.css" />
     <link
@@ -37,48 +37,16 @@
         </div>
       </nav>
     </section>
-    <section id="upload">
+    <section id="error">
       <div class="container">
         <div class="main-container shadow background-tint">
           <div class="main-container-heading">
             <h2 class="fs-1 text-white">Brain MRI Segmentation</h2>
           </div>
-          <div class="main-container-description">
-            <p class="text-white text-sm">
-              Upload an image with a brain MRI scan to detect any abnormalities.
-            </p>
-          </div>
           <div class="main-container-form">
-            <form action="/upload" method="post" enctype="multipart/form-data">
-              <div class="mb-3">
-                <label for="task" class="form-label text-white">Task</label>
-                <select
-                  class="form-select"
-                  aria-label=""
-                  id="task"
-                  name="task"
-                  required
-                >
-                  <option selected>Open this select menu</option>
-                  <option value="flair_abnormality_segmentation">
-                    FLAIR Abnormality Segmentation
-                  </option>
-                </select>
-              </div>
-              <div class="mb-3 main-container-input-file">
-                <label for="image" class="form-label text-white">Image</label>
-                <input
-                  class="form-control text-sm"
-                  type="file"
-                  accept="image/*"
-                  name="image"
-                  required
-                />
-              </div>
-              <div class="main-container-button">
-                <input type="submit" class="btn btn-primary" value="Upload" />
-              </div>
-            </form>
+            <div class="mb-3">
+              <p class="text-white text-sm">{{message}}</p>
+            </div>
           </div>
         </div>
       </div>
