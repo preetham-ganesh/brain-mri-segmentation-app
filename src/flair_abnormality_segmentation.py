@@ -166,3 +166,52 @@ class UNet(object):
         predicted_image = self.threshold_image(predicted_image)
         predicted_image = predicted_image.astype(np.uint8)
         return predicted_image
+
+    def predict_mask(self, image_file_path: str) -> Dict[str, Any]:
+        """Loads & preprocesses image based on model requirements. Predicts mask for the brain MRI image.
+
+        Loads & preprocesses image based on model requirements. Predicts mask for the brain MRI image.
+
+        Args:
+            image_file_path: A string for the location of the image file path.
+
+        Returns:
+            A dictionary for status of the prediction, along with predicted digit & prediction's confidence score.
+        """
+        # Asserts type & value of the arguments.
+        assert isinstance(
+            image_file_path, str
+        ), "Variable image_file_path should be of type 'str'."
+
+        # Loads & preprocesses image based on model requirements.
+        model_input_image = self.load_preprocess_image(image_file_path)
+
+        # Sends model input image as input to Model using URL.
+        try:
+            response = requests.post(
+                self.model_api_url,
+                data=json.dumps({"inputs": model_input_image.tolist()}),
+                headers={"content-type": "application/json"},
+            )
+        except requests.exceptions.ConnectionError:
+            return {
+                "status": "Failure",
+                "message": "Serving URL does not exist. Received 'requests.exceptions.ConnectionError' error.",
+            }
+
+        # If status is 200, then extracts the prediction from the response.
+        if response.status_code == 200:
+            prediction = np.array(
+                json.loads(response.text)["outputs"], dtype=np.float32
+            )
+
+            # Converts the prediction from the segmentation model output into an image.
+            predicted_image = self.postprocess_prediction(prediction)
+
+            # Saves input, predicted, and annotated images.
+            cv2.imwrite("data/out.png", predicted_image)
+            return {"status": "Success"}
+
+        # Else returns the text from response.
+        else:
+            return {"status": "Failure", "message": response.text}
