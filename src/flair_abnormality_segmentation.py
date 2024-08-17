@@ -1,4 +1,9 @@
-class Segmentation(object):
+import os
+
+from src.utils import load_json_file
+
+
+class UNet(object):
     """Segments location of an FLAIR abnormality in a brain MRI image."""
 
     def __init__(self, model_version: str, model_api_url: str) -> None:
@@ -24,3 +29,24 @@ class Segmentation(object):
         # Initializes class variables.
         self.model_version = model_version
         self.model_api_url = model_api_url
+
+    def load_model_configuration(self) -> None:
+        """Loads the model configuration file for current version.
+
+        Loads the model configuration file for current version.
+
+        Args:
+            None.
+
+        Returns:
+            None.
+        """
+        self.home_directory_path = os.getcwd()
+        model_configuration_directory_path = (
+            "{}/configs/models/flair_abnormality_segmentation".format(
+                self.home_directory_path
+            )
+        )
+        self.model_configuration = load_json_file(
+            "v{}".format(self.model_version), model_configuration_directory_path
+        )
